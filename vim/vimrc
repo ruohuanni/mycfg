@@ -1,0 +1,114 @@
+"{
+colorscheme desert
+"}
+"{
+syntax on                  
+filetype on
+""根据文件类型缩进, python会寻找~/.vim/indent/python.vim
+filetype indent on         
+
+set number                 ""设置行号
+"set relativenumber
+set nocompatible           ""去除vi一致性模式
+set backspace=2            ""可以任意在插入模式删除，设置为1，就只能删除刚编辑的
+set expandtab              ""将tap转为space, :retab!将既有的tab转为space
+set shiftwidth=4           ""每次缩进4个空格
+set tabstop=4              ""设置tab为4个空格
+set softtabstop=4          ""
+set smarttab               ""行首按tab时用shiftwidth填充
+set autoindent             ""自动缩进到相同位置-->noautoindent
+set smartindent            ""自动缩进，能识别{}
+set cindent                ""能很好的识别C和java
+
+set ruler                  ""下方显示光标和行号
+set showcmd                ""显示未完成的指令输入
+set scrolloff=3            ""当下拉到离顶端或者底端3行时开始滚动
+set matchtime=1            ""调整matchtime的时间1/10秒
+set nolist                 ""关闭tab、行位、等特殊符号的显示
+set textwidth=80
+set wrap
+set foldenable             ""允许折叠
+
+""存在磁盘上的文件格式在vim中叫fileencoding, vim缓冲区中叫encoding,终端使用的叫termencoding
+""读文件时vim不知道文件编码，通过fileencodings设置一个个探测，找到认为合适的，可以通过set fileencoding主动设置
+set fileencodings=utf-8,gbk
+set encoding=utf-8
+set termencoding=utf-8
+
+"{ [搜索]
+set showmatch              ""输入成对的括号时会高亮
+set hlsearch               ""高亮搜索结果
+set incsearch              ""搜索时没输入一个自动跳到第一个匹配结果
+set ignorecase             ""查找时不考虑大小写-->noic
+set smartcase              ""有大写就大小写敏感，没有就不敏感
+"}
+"
+"{ [编辑]
+set nobackup              ""不创建备份文件，没有~文件
+"set undofile              ""保留撤销历史，撤销文件是跟原文件保存在一起的隐藏文件，以.un~结尾
+set noerrorbells          ""出错时不要发出响声
+set history=1000          ""记住多少次历史操作
+set confirm               ""处理未保存或只读文件时提示
+set wildmenu              ""底部命令按tab自动补全
+set wildmode=longest:list,full
+set mouse=a
+
+"}
+
+"set cursorline             ""突出当前行
+"black, brown, grey, blue, green, cyan, magenta, yellow, white
+"highlight CursorLine   cterm=NONE ctermbg=black ctermfg=green guibg=NONE guifg=NONE
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\"%{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+"
+"}
+
+"{ [按键]
+
+let mapleader="\<Space>"
+nmap <Leader>w :w<CR>
+
+"}
+"{ [插件]
+"""Vundle
+filetype off
+"" 执行BundleInstall安装
+"set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'scrooloose/nerdtree'
+Plugin 'Yggdroot/LeaderF'
+Plugin 'junnegunn/vim-easy-align'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'rking/ag.vim'
+call vundle#end()
+filetype on
+
+""NERDTree
+""i/s分割文件、p上层目录, q关闭、t
+"autocmd vimenter * NERDTree  ""自动启动NERDTree
+map <C-n> :NERDTreeToggle<CR>
+""关闭最后一个文件时自动关闭NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeIgnore=['\.o$','\.d$']
+let g:NERDTreeDirArrowExpandable='+'
+let g:NERDTreeDirArrowCollapsible='-'
+let NERDTreeWinPos='left'
+let NERDTreeWinSize=30
+
+""LeaderF
+let g:Lf_ShortcutF = '<C-P>'
+highlight Lf_hl_match gui=bold guifg=Blue cterm=bold ctermfg=21
+highlight Lf_hl_matchRefine  gui=bold guifg=Magenta cterm=bold ctermfg=201
+
+""vim-easy-align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+""Ag
+"~/.agignore文件可以忽略搜索
+let g:ag_prg="/usr/local/bin/ag --vimgrep"
+let g:ag_working_path_mode="r"
+nmap <c-u> :Ag<space>
+"}
+    
