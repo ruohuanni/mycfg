@@ -1,0 +1,2 @@
+# mycfg
+linux cfg
